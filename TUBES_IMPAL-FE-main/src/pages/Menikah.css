@@ -1,0 +1,154 @@
+.menikah-container {
+    max-width: 1000px;
+    margin: 100px auto 50px auto;
+    padding: 0 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.menikah-header {
+    margin-bottom: 40px;
+}
+
+.menikah-header h1 {
+    font-size: 2.5rem;
+    color: #000;
+    margin-bottom: 10px;
+}
+
+.menikah-header p {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.calculator-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 40px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+}
+
+.form-group input:focus {
+    border-color: #389D91;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.half-width {
+    width: 50%;
+}
+
+.input-suffix-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-suffix-wrapper input {
+    width: 100%;
+    padding-right: 70px;
+}
+
+.input-suffix-wrapper .suffix {
+    position: absolute;
+    right: 15px;
+    color: #aaa;
+    pointer-events: none;
+}
+
+.result-section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
+.result-item {
+    margin-bottom: 25px;
+}
+
+.label-result {
+    font-size: 1.1rem;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.result-item h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000;
+}
+
+.status-pill {
+    display: inline-block;
+    padding: 10px 40px;
+    border-radius: 50px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.status-pill.success {
+    background-color: #CCF8C9;
+    color: #000;
+}
+
+.status-pill.danger {
+    background-color: #F8CCC9;
+    color: #000;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.btn-hitung {
+    background-color: #5A8DEE;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 15px 0;
+    width: 400px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(90, 141, 238, 0.3);
+    transition: background 0.3s;
+}
+
+.btn-hitung:hover {
+    background-color: #4a7bd6;
+}
+
+@media screen and (max-width: 768px) {
+    .calculator-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .btn-hitung {
+        width: 100%;
+    }
+}

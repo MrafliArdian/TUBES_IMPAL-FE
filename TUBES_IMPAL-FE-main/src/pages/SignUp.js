@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './SignUp.css';
-import { Button } from '../Button';
+import { Button } from '../components/Button/Button';
 import { useNavigate } from 'react-router-dom';
 
 export default function SignUp() {
@@ -13,24 +13,23 @@ export default function SignUp() {
     const [error, setError] = useState("");
 
     function handleSubmit() {
-    if (!nama || !email || !hp || !password) {
-      setError("Semua field harus diisi!");
-      return;
-    }
-
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) {
-        setError("Format email tidak valid!");
-        return;
-    }
-
-    if (password.length < 8) {
-        setError("Password harus minimal 8 karakter!");
+      if (!nama || !email || !hp || !password) {
+        setError("Semua field harus diisi!");
         return;
       }
 
-    // valid → navigate
-    navigate("/");
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+          setError("Format email tidak valid!");
+          return;
+      }
+
+      if (password.length < 8) {
+        setError("Password harus minimal 8 karakter!");
+        return;
+      }
+      // valid → navigate
+      navigate("/");
   }
 
   return (
