@@ -1,5 +1,4 @@
-import React from 'react'
-import { Button } from './Button'
+import { Button } from '../Button/Button'
 import './Footer.css'
 import { Link } from 'react-router-dom'
 
@@ -11,7 +10,7 @@ function Footer() {
             JOIN THE ADVENTURE LOL IDK WHAT TO PUT HERE I DONT WANNA FOLLOW THE TUTORIAL
         </p>
         <p class="footer-subscription-text">
-            FUCK YOU
+             YOU
         </p>
         <div class="input-areas">
             <form >

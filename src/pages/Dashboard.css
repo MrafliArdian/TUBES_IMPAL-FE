@@ -1,0 +1,122 @@
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 100px auto 50px auto; 
+    padding: 0 20px;
+    text-align: center;
+}
+
+.welcome-banner {
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    display: inline-block;
+    padding: 10px 40px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    border: 1px solid #ddd;
+}
+
+.welcome-banner h2 {
+    margin: 0;
+    color: #333;
+}
+
+.calculator-card {
+    background-color: #BFDCD6; 
+    padding: 50px;
+    border-radius: 15px;
+    border: 8px solid #6DBFB3; 
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    margin-bottom: 40px;
+}
+
+.calculator-card h3 {
+    font-size: 2rem;
+    color: #000;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.calculator-card p {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 40px;
+}
+
+.btn-calc {
+    background-color: #389D91;
+    color: white;
+    padding: 12px 60px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-calc:hover {
+    background-color: #2a7a70;
+}
+.features-section {
+    text-align: left; 
+    margin-top: 40px; 
+}
+
+.features-section h4 {
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+    padding-left: 20px;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px 20px; 
+    justify-items: center; 
+    max-width: 650px; 
+    margin: 0 auto; 
+}
+
+.feature-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; 
+}
+
+.feature-item {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.feature-item:hover {
+    transform: translateY(-5px);
+}
+
+.icon-circle {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.8rem;
+    color: white;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+}
+
+.feature-item p {
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: #333;
+    text-align: center; 
+}
+
+.yellow-bg { background-color: #F4A261; }
+.red-bg { background-color: #E76F51; }
+.green-bg { background-color: #2A9D8F; }
+.teal-bg { background-color: #6DBFB3; }
+.gold-bg { background-color: #B59D00; }
+.dark-green-bg { background-color: #264653; }

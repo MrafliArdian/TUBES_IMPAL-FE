@@ -1,22 +1,41 @@
 import React from 'react';
 import './App.css';
-import NavBar from './component/NavBar';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './component/Pages/Home'
-import Services from './component/Pages/Services'
-import Products from './component/Pages/Products'
-import SignUp from './component/Pages/SignUp'
+import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 
+import NavBar from './components/NavBar/NavBar';
+
+import Home from './pages/Home';
+import SignUp from './pages/SignUp';
+import Dashboard from './pages/Dashboard';
+import Menikah from './pages/Menikah';
+import DanaPensiun from './pages/DanaPensiun';
+import SignIn from './pages/SignIn';
+import Method from './pages/ChooseMethod';
+
+const PublicLayout = () => {
+  return (
+    <>
+      <NavBar /> 
+      <Outlet /> 
+    </>
+  );
+};
 
 function App() {
   return (
     <Router>
-      <NavBar />
       <Routes>
-        <Route path="/" exact Component={Home} />
-        <Route path='/services' Component={Services}/>
-        <Route path='/products' Component={Products}/>
-        <Route path='/sign-up' Component={SignUp}/>
+        <Route element={<PublicLayout />}>
+          <Route path="/" exact Component={Home} />
+          <Route path='/sign-up' Component={SignUp}/>
+          <Route path='/sign-in' Component={SignIn}/>
+          <Route path='/choose' Component={Method}/>
+        </Route>
+
+        <Route path='/dashboard' Component={Dashboard}/>
+        <Route path='/menikah' Component={Menikah}/>
+        <Route path='/pensiun' Component={DanaPensiun}/>
+        
       </Routes>
     </Router>
   );
