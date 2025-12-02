@@ -1,23 +1,36 @@
-.menikah-container {
+.dana-container {
     max-width: 1000px;
     margin: 100px auto 50px auto;
     padding: 0 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.menikah-header {   
+.dana-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     margin-bottom: 40px;
+    width: 100%;
 }
 
-.menikah-header h1 {
+.dana-header h1 {
     font-size: 2.5rem;
     color: #000;
-    margin-bottom: 10px;
+    font-weight: bold;
+    margin: 0;
+    text-align: left;
 }
 
-.menikah-header p {
-    color: #666;
-    font-size: 1.1rem;
+.dana-header p, 
+.subtitle {
+    color: #666 !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    max-width: 600px;
+    text-align: left !important;
+    margin: 8px 0 0 0 !important;
+    padding: 0 !important;
 }
 
 .calculator-grid {
@@ -28,13 +41,13 @@
 }
 
 .form-group {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     display: flex;
     flex-direction: column;
 }
 
 .form-group label {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: #666;
     margin-bottom: 8px;
 }
@@ -51,15 +64,6 @@
     border-color: #389D91;
 }
 
-.form-row {
-    display: flex;
-    gap: 20px;
-}
-
-.half-width {
-    width: 50%;
-}
-
 .input-suffix-wrapper {
     position: relative;
     display: flex;
@@ -68,7 +72,7 @@
 
 .input-suffix-wrapper input {
     width: 100%;
-    padding-right: 70px;
+    padding-right: 50px;
 }
 
 .input-suffix-wrapper .suffix {
@@ -76,26 +80,28 @@
     right: 15px;
     color: #aaa;
     pointer-events: none;
+    font-size: 1.2rem;
 }
 
-.result-section h2 {
-    font-size: 1.8rem;
-    margin-bottom: 30px;
-    font-weight: 500;
+.result-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 10px;
 }
 
 .result-item {
-    margin-bottom: 25px;
+    margin-bottom: 30px;
 }
 
 .label-result {
-    font-size: 1.1rem;
-    color: #888;
+    font-size: 1.2rem;
+    color: #666; 
     margin-bottom: 5px;
 }
 
-.result-item h3 {
-    font-size: 1.5rem;
+.large-result {
+    font-size: 1.8rem;
     font-weight: bold;
     color: #000;
 }
@@ -106,6 +112,7 @@
     border-radius: 50px;
     font-weight: bold;
     margin-top: 10px;
+    width: fit-content;
 }
 
 .status-pill.success {

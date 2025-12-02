@@ -109,7 +109,7 @@ function Menikah() {
                         </div>
                     </div>
                     <div className='form-group half-width'>
-                        <label>Target Usia menikah</label>
+                        <label>target menikah dalam</label>
                         <div className="input-suffix-wrapper">
                             <input 
                                 type="number" 

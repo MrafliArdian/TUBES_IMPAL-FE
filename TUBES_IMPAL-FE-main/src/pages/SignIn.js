@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
-import './SignUp.css';
+import './SignIn.css';
 import { Button } from '../components/Button/Button';
 import { useNavigate } from 'react-router-dom';
 
-export default function SignUp() {
+export default function SignIn() {
     const navigate = useNavigate();
 
-    const [nama, setNama] = useState("");
     const [email, setEmail] = useState("");
-    const [hp, setHp] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
     function handleSubmit() {
-      if (!nama || !email || !hp || !password) {
+      if (!email|| !password) {
         setError("Semua field harus diisi!");
         return;
       }
@@ -33,49 +31,26 @@ export default function SignUp() {
   }
 
   return (
-    <div className="signUpPage">  
-      <div className="signup-wrapper">
+    <div className="signInPage">  
+      <div className="signIn-wrapper">
         
         {/* IMAGE */}
         <div 
-          className="signup-left"
+          className="signIn-left"
           style={{ backgroundImage: "url('/images/ImageLogin.jpg')" }}
         ></div>
 
         {/* FORMS */}
-        <div className="signup-right">
-          <h1 className="title">Buat Akun</h1>
+        <div className="signIn-right">
+          <h1 className="title">Masuk ke Akun</h1>
           <p className="subtitle">Kalkulator Investasi!</p>
-          <form className="signup-form">
-
-            <input 
-            type="text" 
-            placeholder="Masukkan Nama Lengkap" 
-            value={nama}
-            onChange={(e) => setNama(e.target.value)}
-            required
-            />
+          <form className="signIn-form">
 
             <input 
             type="email" 
             placeholder="Masukkan Email" 
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
-            />
-
-            <input 
-            type="tel" 
-            placeholder="Masukkan No.Handphone" 
-            value={hp}
-            onChange={(e) => {
-              const value = e.target.value;
-
-              // Hanya izinkan angka
-              if (/^[0-9]*$/.test(value)) {
-                  setHp(value);
-              }
-            }}
             required
             />
 
@@ -89,7 +64,7 @@ export default function SignUp() {
 
             {error && <p className="error">{error}</p>}
           </form>
-          <div className="signIn-btn">
+          <div className="login-btn">
               <Button 
               className='btns' 
               buttonStyle='btn--green' 

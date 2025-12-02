@@ -32,28 +32,25 @@ function NavBar({ isLoggedIn }) {
       return (
         <>
           <li className='nav-item'>
-            <Link to='/dashboard' className='nav-links' onClick={closeMobileMenu}>Home</Link>
+            <Link to='/dashboard' className='nav-links' onClick={closeMobileMenu}>
+            Home
+            </Link>
           </li>
           <li className='nav-item'>
-            <Link to='/artikel' className='nav-links' onClick={closeMobileMenu}>Artikel</Link>
+            <Link to='/artikel' className='nav-links' onClick={closeMobileMenu}>
+            Artikel
+            </Link>
           </li>
           <li className='nav-item'>
-            <Link to='/history' className='nav-links' onClick={closeMobileMenu}>History</Link>
+            <Link to='/history' className='nav-links' onClick={closeMobileMenu}>
+            History
+            </Link>
           </li>
         </>
       );
     } else {
       return (
         <>
-          {/* <li className='nav-item'>
-            <Link to='/' className='nav-links' onClick={closeMobileMenu}>Home</Link>
-          </li>
-          <li className='nav-item'>
-            <Link to='/services' className='nav-links' onClick={closeMobileMenu}>Services</Link>
-          </li>
-          <li className='nav-item'>
-            <Link to='/products' className='nav-links' onClick={closeMobileMenu}>Products</Link>
-          </li> */}
           <li className='nav-item'>
             <Link to='/sign-up' className='nav-links-mobile' onClick={closeMobileMenu}>Sign Up</Link>
           </li>
@@ -67,7 +64,7 @@ function NavBar({ isLoggedIn }) {
       <nav className='navbar'>
         <div className='navbar-container'>
           <Link to={isLoggedIn ? '/dashboard' : '/'} className='navbar-logo' onClick={closeMobileMenu}>
-            KI
+            <img src="/images/Logo.png" alt="Logo" className='navbar-logo-img'/>
           </Link>
           
           <div className='menu-icon' onClick={handleClick}>
