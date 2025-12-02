@@ -58,3 +58,27 @@
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0,0,0,0.25);
 }
+
+.btn--black {
+    background-color: black;
+    color: white;
+    padding: 24px 80px;
+    border-radius: 100px;
+    transition: 0.2 ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    font-weight: 200;
+    font-size: 24px;
+    border: 2px solid #242424;
+}
+
+.btn--white{
+    background-color: white;
+    color: black;
+    padding: 24px 80px;
+    border-radius: 100px;
+    transition: 0.2 ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    font-weight: 200;
+    font-size: 24px;
+    border: 2px solid #242424;
+}
