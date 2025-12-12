@@ -9,7 +9,7 @@ function HeroSection() {
       <h1>SELAMAT DATANG DI KALKULATOR INVESTASI</h1>
       <p>Proyeksi investasi yang andal — sederhana dan akurat</p>
       <div className='hero-btns'>
-        <Button to='/choose' className='btns' buttonStyle='btn--green' buttonSize='btn--large'>
+        <Button to='/sign-in' className='btns' buttonStyle='btn--green' buttonSize='btn--large'>
             MASUK
         </Button>
         <Button to='/sign-up' className='btns' buttonStyle='btn--green' buttonSize='btn--large'>

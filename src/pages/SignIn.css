@@ -24,23 +24,23 @@
 }
 
 /* FORM */
-.signup-right {
+.signIn-right {
   width: 50%;
-  padding: 100px;
+  padding: 80px;
   background: white;
   display: flex;
   flex-direction: column;
 }
 
 
-.title{
+.title-signIn{
     font-size: 70px;
     font-weight: 700;
     text-align: left;
     margin-left: 30px;
 }
 
-.subtitle{
+.subtitle-signIn{
     font-size: 48px;
     margin-bottom: 50px;
     margin-left: 30px;
@@ -52,7 +52,7 @@
   width: 90%;
   padding: 12px;
   margin-bottom: 40px;
-  margin-top: 70px;
+  margin-top: 10px;
   margin-left: 30px;
   border-radius: 1px;
   border: 2px solid #ccc;
@@ -60,7 +60,7 @@
 }
 
 .login-btn{
-    margin-top: 40px;
+    margin-top: 150px;
     margin-left: 270px;
 }
 

@@ -98,7 +98,7 @@ function DanaDarurat() {
       <div className='dana-container'>
         <div className='dana-header'>
             <h1>{isHistoryMode ? 'History Dana Darurat' : 'Dana Darurat'}</h1>
-            <p className='subtitle'>
+            <p className='subtitle-darurat'>
               {isHistoryMode 
                 ? 'Hasil perhitungan yang sudah dihitung pada Dana Darurat' 
                 : 'Hanya digunakan saat darurat, bukan untuk kebutuhan sehari-hari atau konsumsi'}

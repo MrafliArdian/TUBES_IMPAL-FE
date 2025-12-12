@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './NavBar.css';
 import { Button } from '../Button/Button'; 
 
-function NavBar({ isLoggedIn }) {
+function NavBar({ isLoggedIn, isAdmin }) {
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
   const [profileDropdown, setProfileDropdown] = useState(false);
@@ -31,29 +31,31 @@ function NavBar({ isLoggedIn }) {
     if (isLoggedIn) {
       return (
         <>
+
           <li className='nav-item'>
             <Link to='/dashboard' className='nav-links' onClick={closeMobileMenu}>
             Home
             </Link>
           </li>
+
           <li className='nav-item'>
             <Link to='/artikel' className='nav-links' onClick={closeMobileMenu}>
             Artikel
             </Link>
           </li>
+
           <li className='nav-item'>
             <Link to='/history' className='nav-links' onClick={closeMobileMenu}>
             History
             </Link>
           </li>
-        </>
-      );
-    } else {
-      return (
-        <>
+
           <li className='nav-item'>
-            <Link to='/sign-up' className='nav-links-mobile' onClick={closeMobileMenu}>Sign Up</Link>
+            <Link to='/admin-panel' className='nav-links' onClick={closeMobileMenu}>
+            Admin Panel
+            </Link>
           </li>
+          
         </>
       );
     }
@@ -76,7 +78,7 @@ function NavBar({ isLoggedIn }) {
           </ul>
 
           {!isLoggedIn ? (
-            button && <Button to='/sign-up' buttonStyle='btn--outline'>SIGN UP</Button>
+            null
           ) : (
             <div className='profile-container'>
               <div className='profile-icon' onClick={toggleProfileDropdown}>
@@ -92,8 +94,9 @@ function NavBar({ isLoggedIn }) {
                     <div className='dropdown-info'>
                       <h4>John Doe</h4>
                       <p>cooljd@gmail.com</p>
-                      <Link to='/profile' className='manage-link'>Manage Account</Link>
+                      <Link to='/editProfile' className='manage-link'>Edit Profile</Link>
                     </div>
+                    <Link to='/editPass' className='manage-link'>Edit Password</Link>
                     <Link to='/' className='sign-out-btn'>Sign Out</Link>
                   </div>
                 </div>

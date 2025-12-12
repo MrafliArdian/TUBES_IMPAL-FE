@@ -11,9 +11,10 @@ export default function SignUp() {
     const [hp, setHp] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
     function handleSubmit() {
-      if (!nama || !email || !hp || !password) {
+      if (!nama || !email || !hp || !password || !confirmPassword) {
         setError("Semua field harus diisi!");
         return;
       }
@@ -28,6 +29,12 @@ export default function SignUp() {
         setError("Password harus minimal 8 karakter!");
         return;
       }
+
+      if (confirmPassword != password){
+        setError("Password tidak sesuai!")
+        return
+      }
+      
       // valid → navigate
       navigate("/dashboard");
   }
@@ -84,6 +91,14 @@ export default function SignUp() {
             placeholder="Masukkan password" 
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
+            />
+
+            <input 
+            type="password" 
+            placeholder="Konfirmasi password" 
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             required
             />
 

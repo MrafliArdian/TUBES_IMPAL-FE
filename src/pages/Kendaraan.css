@@ -1,0 +1,133 @@
+.kendaraan-wrapper{
+    max-width: 1000px;
+    margin: 100px auto 50px auto;
+    padding: 0 20px;
+    font-family: c;
+}
+
+.kendaraan-header{
+    margin-bottom: 40px;
+}
+
+.kendaraan-header h1{
+    font-size: 2.5rem;
+    color: black;
+    margin-bottom: 10px;
+}
+
+.kendaraan-header p{
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.kendaraan-isi{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 40px;
+}
+
+.kendaraan-formGroup{
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.kendaraan-formGroup label{
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.kendaraan-formGroup input{
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+}
+
+.kendaraan-formRow{
+    display: flex;
+    gap: 30px;
+    margin-bottom: 25px;
+}
+
+.kendaraan-formRow label{
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.kendaraan-formRow input{
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    flex-direction: column;
+}
+
+.kendaraan-formRow .kendaraan-formGroup {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.kendaraan-formBottom input{
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    flex-direction: column;
+}
+
+.kendaraan-formBottom label{
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.kendaraan-formBottom{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.kendaraan-formBottomGroup{
+    display: flex;
+    flex-direction: column;
+}
+
+.inputWSuffix-kendaraan {
+    position: relative;
+    width: 100%;
+}
+
+.inputWSuffix-kendaraan .suffix-kendaraan{
+    position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  pointer-events: none;
+}
+
+.status-pill {
+    display: inline-block;
+    padding: 10px 40px;
+    border-radius: 50px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.status-pill.success {
+    background-color: #CCF8C9;
+    color: #000;
+}
+
+.status-pill.danger {
+    background-color: #F8CCC9;
+    color: #000;
+}

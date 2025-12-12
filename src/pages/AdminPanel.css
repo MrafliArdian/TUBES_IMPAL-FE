@@ -1,0 +1,114 @@
+/* ====== WRAPPER ====== */
+.admin-wrapper {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background: #ffffff;
+  font-family: "Poppins", sans-serif;
+}
+
+
+
+/* ====== SIDEBAR ====== */
+.admin-sidebar {
+  width: 260px;
+  background: #2F958D;             /* warna hijau sidebar */
+  padding: 30px 25px;
+  color: white;
+}
+
+/* Logo + Admin Panel */
+.admin-sidebar h2 {
+  color: white !important;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-sidebar .logo {
+  background: #004d40;
+  color: #ffcc00;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+/* Sidebar menu */
+.admin-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-sidebar ul li {
+  padding: 12px 0;
+  font-size: 18px;
+  cursor: pointer;
+  position: relative;
+}
+
+/* Underline untuk menu active */
+.admin-sidebar ul li.active {
+  font-weight: 600;
+}
+
+.admin-sidebar ul li.active::after {
+  content: "";
+  width: 160px;
+  height: 2px;
+  background: #ffffff;
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+}
+
+
+
+/* ====== MAIN CONTENT ====== */
+.admin-content {
+  flex: 1;
+  padding: 40px 60px;
+}
+
+/* Dashboard title */
+.admin-content h1 {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: #333;
+}
+
+
+
+/* ====== TABLE ====== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+
+thead th {
+  text-align: left;
+  padding-bottom: 10px;
+  font-weight: 600;
+}
+
+/* garis seperti desain */
+tbody tr,
+thead tr {
+  border-bottom: 2px solid #d7d7d7;
+}
+
+td {
+  padding: 18px 0;
+  color: #333;
+}

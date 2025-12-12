@@ -36,8 +36,8 @@ export default function SignIn() {
 
         {/* FORMS */}
         <div className="signIn-right">
-          <h1 className="title">Masuk ke Akun</h1>
-          <p className="subtitle">Kalkulator Investasi!</p>
+          <h1 className="title-signIn">Masuk ke Akun</h1>
+          <p className="subtitle-signIn">Kalkulator Investasi!</p>
           <form className="signIn-form">
 
             <input 

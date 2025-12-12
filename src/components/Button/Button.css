@@ -96,3 +96,14 @@
     box-shadow: 0 4px 10px rgba(90, 141, 238, 0.3);
     transition: background 0.3s;
 }
+
+.btn--darkgreen {
+    background-color: #3bc2b2;
+    color: black;
+    border: 2px solid black;
+    border-radius: 5px;
+    transition: 0.2 ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    font-weight: 600;
+    font-size: 20px;
+}
