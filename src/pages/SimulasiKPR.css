@@ -1,21 +1,21 @@
-.menikah-container {
+.kpr-container {
     max-width: 1000px;
     margin: 100px auto 50px auto;
     padding: 0 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.menikah-header {   
+.kpr-header {
     margin-bottom: 40px;
 }
 
-.menikah-header h1 {
+.kpr-header h1 {
     font-size: 2.5rem;
     color: #000;
     margin-bottom: 10px;
 }
 
-.menikah-header p {
+.kpr-header p {
     color: #666;
     font-size: 1.1rem;
 }
@@ -28,13 +28,13 @@
 }
 
 .form-group {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     display: flex;
     flex-direction: column;
 }
 
 .form-group label {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: #666;
     margin-bottom: 8px;
 }
@@ -54,6 +54,7 @@
 .form-row {
     display: flex;
     gap: 20px;
+    margin-bottom: 10px;
 }
 
 .half-width {
@@ -68,7 +69,7 @@
 
 .input-suffix-wrapper input {
     width: 100%;
-    padding-right: 70px;
+    padding-right: 60px; 
 }
 
 .input-suffix-wrapper .suffix {
@@ -76,15 +77,17 @@
     right: 15px;
     color: #aaa;
     pointer-events: none;
+    font-size: 0.9rem;
 }
 
-.result-section h2 {
-    font-size: 1.8rem;
-    margin-bottom: 30px;
-    font-weight: 500;
+.result-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 10px;
 }
 
-.result-item {
+.result-item-small {
     margin-bottom: 25px;
 }
 
@@ -94,10 +97,10 @@
     margin-bottom: 5px;
 }
 
-.result-item h3 {
-    font-size: 1.5rem;
+.result-item-small h3 {
+    font-size: 1.5rem; /* Lebih kecil dari judul halaman Pendidikan agar muat banyak */
     font-weight: bold;
-    color: black;
+    color: #000;
 }
 
 .status-pill {
@@ -106,6 +109,7 @@
     border-radius: 50px;
     font-weight: bold;
     margin-top: 10px;
+    width: fit-content;
 }
 
 .status-pill.success {
@@ -124,7 +128,23 @@
     margin-top: 20px;
 }
 
+.btn-hitung {
+    background-color: #5A8DEE;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 15px 0;
+    width: 400px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(90, 141, 238, 0.3);
+    transition: background 0.3s;
+}
 
+.btn-hitung:hover {
+    background-color: #4a7bd6;
+}
 
 @media screen and (max-width: 768px) {
     .calculator-grid {

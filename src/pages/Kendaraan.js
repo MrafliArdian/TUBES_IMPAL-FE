@@ -4,7 +4,7 @@ import NavBar from "../components/NavBar/NavBar";
 import { formatNumber, unformatNumber, formatRupiah } from "../Format";
 import { Button } from "../components/Button/Button";
 
-export default function DanaPensiun() {
+export default function Kendaraan() {
   const [pengeluaranBulanan, setPengeluaranBulanan] = useState('');
   const [danaTersedia, setDanaTersedia] = useState('');
   const [targetInvestasi, setTargetInvestasi] = useState('');
@@ -148,15 +148,15 @@ export default function DanaPensiun() {
           </div>
 
           <div className='button-container'>
-                      <Button 
-                      className='btn-hitung'
-                      buttonStyle='btn--hitung'
-                      buttonSize='btn--large'
-                      onClick={handleHitung}
-                      type='button'
-                      >
-                          Hitung
-                      </Button>
+            <Button 
+            className='btn-hitung'
+            buttonStyle='btn--hitung'
+            buttonSize='btn--large'
+            onClick={handleHitung}
+            type='button'
+            >
+                Hitung
+            </Button>
           </div>
         </div>
     </>

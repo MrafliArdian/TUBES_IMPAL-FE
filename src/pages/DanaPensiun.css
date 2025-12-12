@@ -1,7 +1,133 @@
 .pensiun-wrapper{
-    font-size: 50px;
-    font-weight: 600;
+    max-width: 1000px;
+    margin: 100px auto 50px auto;
+    padding: 0 20px;
+    font-family: c;
+}
+
+.pensiun-header{
+    margin-bottom: 40px;
+}
+
+.pensiun-header h1{
+    font-size: 2.5rem;
+    color: black;
+    margin-bottom: 10px;
+}
+
+.pensiun-header p{
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.pensiun-isi{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 40px;
+}
+
+.pensiun-formGroup{
+    margin-bottom: 25px;
     display: flex;
-    margin-top: 100px;
-    
+    flex-direction: column;
+}
+
+.pensiun-formGroup label{
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.pensiun-formGroup input{
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+}
+
+.pensiun-formRow{
+    display: flex;
+    gap: 30px;
+    margin-bottom: 25px;
+}
+
+.pensiun-formRow label{
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.pensiun-formRow input{
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    flex-direction: column;
+}
+
+.pensiun-formRow .pensiun-formGroup {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.pensiun-formBottom input{
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    flex-direction: column;
+}
+
+.pensiun-formBottom label{
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.pensiun-formBottom{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.pensiun-formBottomGroup{
+    display: flex;
+    flex-direction: column;
+}
+
+.inputWSuffix {
+    position: relative;
+    width: 100%;
+}
+
+.inputWSuffix .suffix{
+    position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  pointer-events: none;     /* biar gak menghalangi klik ke input */
+}
+
+.status-pill {
+    display: inline-block;
+    padding: 10px 40px;
+    border-radius: 50px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.status-pill.success {
+    background-color: #CCF8C9;
+    color: #000;
+}
+
+.status-pill.danger {
+    background-color: #F8CCC9;
+    color: #000;
 }

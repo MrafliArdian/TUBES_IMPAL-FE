@@ -6,20 +6,14 @@ import { useNavigate } from 'react-router-dom';
 export default function SignIn() {
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [nama, setNama] = useState("");
     const [error, setError] = useState("");
 
     function handleSubmit() {
-      if (!email|| !password) {
+      if (!nama|| !password) {
         setError("Semua field harus diisi!");
         return;
-      }
-
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailPattern.test(email)) {
-          setError("Format email tidak valid!");
-          return;
       }
 
       if (password.length < 8) {
@@ -47,10 +41,10 @@ export default function SignIn() {
           <form className="signIn-form">
 
             <input 
-            type="email" 
-            placeholder="Masukkan Email" 
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text" 
+            placeholder="Masukkan Username" 
+            value={nama}
+            onChange={(e) => setNama(e.target.value)}
             required
             />
 

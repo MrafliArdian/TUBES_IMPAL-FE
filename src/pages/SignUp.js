@@ -50,7 +50,7 @@ export default function SignUp() {
 
             <input 
             type="text" 
-            placeholder="Masukkan Nama Lengkap" 
+            placeholder="Masukkan Username" 
             value={nama}
             onChange={(e) => setNama(e.target.value)}
             required

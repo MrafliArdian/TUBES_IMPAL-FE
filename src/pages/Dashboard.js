@@ -24,19 +24,19 @@ function Dashboard() {
         <div className='features-section'>
           <h4>Fitur Lain</h4>
           <div className='features-grid'>
-            <div className='feature-item'>
+            <div className='feature-item' onClick={() => navigate('/pendidikan')} style={{cursor: 'pointer'}}>
               <div className='icon-circle yellow-bg'>
                 <i className="fas fa-graduation-cap"></i>
               </div>
               <p>Pendidikan Anak</p>
             </div>
-            <div className='feature-item'>
+            <div className='feature-item' onClick={() => navigate('/simulasiKPR')} style={{cursor: 'pointer'}}>
               <div className='icon-circle red-bg'>
                 <i className="fas fa-home"></i>
               </div>
               <p>Simulasi KPR</p>
             </div>
-            <div className='feature-item'>
+            <div className='feature-item' onClick={() => navigate('/danaDarurat')} style={{cursor: 'pointer'}}>
               <div className='icon-circle green-bg'>
                 <i className="fas fa-exclamation-triangle"></i>
               </div>
@@ -54,7 +54,7 @@ function Dashboard() {
               </div>
               <p>Menikah</p>
             </div>
-             <div className='feature-item'>
+             <div className='feature-item' onClick={() => navigate('/kendaraan')} style={{cursor: 'pointer'}}>
               <div className='icon-circle dark-green-bg'>
                 <i className="fas fa-car"></i>
               </div>
