@@ -19,6 +19,7 @@ import EditProfile from './pages/EditProfile';
 import EditPassword from './pages/EditPassword'
 import AdminPanel from './pages/AdminPanel'
 import UploadArtikel from './pages/UploadArticle'
+import KalkulatorEmas from './pages/KalkulatorEmas'
 
 const PublicLayout = () => {
   return (
@@ -52,6 +53,8 @@ function App() {
         <Route path='/editPass' Component={EditPassword}/>
         <Route path='/admin-panel' Component={AdminPanel}/>
         <Route path='/upload-artikel' Component={UploadArtikel}/>
+        <Route path='/Emas' Component={KalkulatorEmas}/>
+        
 
       </Routes>
     </Router>

@@ -18,7 +18,7 @@ function Dashboard() {
         <div className='calculator-card'>
           <h3>Kalkulator Emas</h3>
           <p>Hitung nilai investasi emas Anda dalam Rupiah secara cepat dan akurat.</p>
-          <button className='btn-calc'>Gunakan Kalkulator</button>
+          <button className='btn-calc' onClick={() => navigate('/emas')} style={{cursor: 'pointer'}}>Gunakan Kalkulator</button>
         </div>
 
         <div className='features-section'>
