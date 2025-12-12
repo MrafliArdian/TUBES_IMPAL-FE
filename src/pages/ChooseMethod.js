@@ -21,7 +21,7 @@ export default function Method() {
             <div class="email-btn">
                 <Button 
                     className='btns' 
-                    buttonStyle='btn--green' 
+                    buttonStyle='btn--black' 
                     buttonSize='btn--large'
                     onClick={() => navigate('/sign-in')}
                     type='button'
@@ -32,7 +32,7 @@ export default function Method() {
             <div class="daftar-btn">
                 <Button 
                     className='btns' 
-                    buttonStyle='btn--green' 
+                    buttonStyle='btn--white' 
                     buttonSize='btn--large'
                     onClick={() => navigate('/sign-up')}
                     type='button'

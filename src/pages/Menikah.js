@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import NavBar from '../components/NavBar/NavBar';
+import { formatNumber, unformatNumber } from "../FormatNum";
 import './Menikah.css';
 
 function Menikah() {
@@ -52,6 +53,7 @@ function Menikah() {
     setShowResult(true);
   };
 
+
   return (
     <>
       <NavBar isLoggedIn={true} />
@@ -68,30 +70,45 @@ function Menikah() {
                 <div className='form-group'>
                     <label>Target biaya menikah</label>
                     <input 
-                        type="number" 
-                        placeholder="Rp." 
-                        value={targetBiaya}
-                        onChange={(e) => setTargetBiaya(e.target.value)}
+                    type="tel"
+                    placeholder="Rp."
+                    value={formatNumber(targetBiaya)}
+                    onChange={(e) => {
+                        const rawValue = unformatNumber(e.target.value);
+                        if (!isNaN(rawValue)) {
+                        setTargetBiaya(rawValue);
+                        }
+                    }}
                     />
                 </div>
 
                 <div className='form-group'>
                     <label>Uangmu Saat ini</label>
                     <input 
-                        type="number" 
+                        type="tel" 
                         placeholder="Rp." 
-                        value={uangSaatIni}
-                        onChange={(e) => setUangSaatIni(e.target.value)}
+                        value={formatNumber(uangSaatIni)}
+                        onChange={(e) => {
+                        const rawValue = unformatNumber(e.target.value);
+                        if (!isNaN(rawValue)) {
+                        setUangSaatIni(rawValue);
+                        }
+                    }}
                     />
                 </div>
 
                 <div className='form-group'>
                     <label>Target investasi per bulan</label>
                     <input 
-                        type="number" 
+                        type="tel" 
                         placeholder="Rp." 
-                        value={investasiBulanan}
-                        onChange={(e) => setInvestasiBulanan(e.target.value)}
+                        value={formatNumber(investasiBulanan)}
+                        onChange={(e) => {
+                        const rawValue = unformatNumber(e.target.value);
+                        if (!isNaN(rawValue)) {
+                        setInvestasiBulanan(rawValue);
+                        }
+                    }}
                     />
                 </div>
 
@@ -100,7 +117,7 @@ function Menikah() {
                         <label>Return Investasi</label>
                         <div className="input-suffix-wrapper">
                             <input 
-                                type="number" 
+                                type="tel" 
                                 placeholder="" 
                                 value={returnInvestasi}
                                 onChange={(e) => setReturnInvestasi(e.target.value)}
@@ -112,7 +129,7 @@ function Menikah() {
                         <label>target menikah dalam</label>
                         <div className="input-suffix-wrapper">
                             <input 
-                                type="number" 
+                                type="tel" 
                                 placeholder="" 
                                 value={jangkaWaktu}
                                 onChange={(e) => setJangkaWaktu(e.target.value)}
