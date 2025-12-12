@@ -50,11 +50,13 @@ function NavBar({ isLoggedIn, isAdmin }) {
             </Link>
           </li>
 
+          {isAdmin && (
           <li className='nav-item'>
             <Link to='/admin-panel' className='nav-links' onClick={closeMobileMenu}>
-            Admin Panel
+              Admin Panel
             </Link>
           </li>
+        )}
           
         </>
       );
