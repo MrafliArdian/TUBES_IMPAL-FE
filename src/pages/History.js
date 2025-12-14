@@ -1,75 +1,69 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBar from '../components/NavBar/NavBar';
 import { useNavigate } from 'react-router-dom';
 import './History.css';
+import api from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
 function History() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [historyItems, setHistoryItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  const dummyData = [
-    {
-      id: 1,
-      type: 'Pendidikan Anak',
-      date: '1m ago',
-      path: '/pendidikan',
-      data: {
-        usiaAnakSekarang: 5,
-        usiaMasukKuliah: 18,
-        biayaPerTahun: 15000000,
-        lamaKuliah: 4,
-        inflasi: 5,
-        returnInvestasi: 10
-      }
-    },
-    {
-      id: 2,
-      type: 'Simulasi KPR',
-      date: '1h 12m ago',
-      path: '/simulasiKPR',
-      data: {
-        hargaProperti: 500000000,
-        dpPercent: 20,
-        tenorBulan: 120,
-        bungaFix: 5
-      }
-    },
-    {
-      id: 3,
-      type: 'Dana Darurat',
-      date: '1h 15m ago',
-      path: '/danaDarurat',
-      data: {
-        pengeluaran: 1500000,
-        targetBulan: 10,
-        danaSaatIni: 1500000,
-        investasiBulanan: 1500000,
-        returnInvestasi: 10
-      }
-    },
-    {
-      id: 4,
-      type: 'Menikah',
-      date: '1h 20m ago',
-      path: '/menikah',
-      data: {
-        targetBiaya: 100000000,
-        uangSaatIni: 10000000
-      }
+  useEffect(() => {
+    const fetchHistory = async () => {
+        try {
+            const response = await api.get('history/');
+            // Backend returns: { count: N, history: [...] }
+            setHistoryItems(response.data.history || []);
+        } catch (err) {
+            console.error(err);
+            setError('Gagal memuat history.');
+        } finally {
+            setLoading(false);
+        }
+    };
+    
+    if (user) {
+        fetchHistory();
     }
-  ];
+  }, [user]);
 
   const handleCekHasil = (item) => {
-    navigate(item.path, { 
+    let path = '/dashboard'; // Default fallback
+    
+    switch(item.calculator_type) {
+        case 'emergency_fund': path = '/dana-darurat'; break;
+        case 'pension': path = '/dana-pensiun'; break;
+        case 'marriage': path = '/menikah'; break;
+        case 'education': path = '/pendidikan'; break;
+        case 'kpr': path = '/simulasi-kpr'; break;
+        case 'gold': path = '/kalkulator-emas'; break;
+        case 'vehicle': path = '/kendaraan'; break;
+        default: break;
+    }
+    
+    // Pass FULL item data to the state so the page can reconstruct it if needed, 
+    // BUT typically history just shows the result. For now, we navigate.
+    // Ideally, the calculator pages should support "View Mode" based on passed state.
+    navigate(path, { 
       state: { 
         isHistory: true, 
-        historyData: item.data 
+        historyData: item
       } 
     });
   };
 
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+    return new Date(dateString).toLocaleDateString('id-ID', options);
+  };
+
   return (
     <>
-      <NavBar isLoggedIn={true} />
+      <NavBar isLoggedIn={!!user} />
       <div className='history-container'>
         <div className='history-header'>
             <h1>History</h1>
@@ -77,18 +71,22 @@ function History() {
         </div>
 
         <div className='history-list'>
-            {dummyData.map((item) => (
+            {loading && <p>Memuat...</p>}
+            {error && <p className="error">{error}</p>}
+            
+            {!loading && historyItems.length === 0 && (
+                <p>Belum ada riwayat perhitungan.</p>
+            )}
+
+            {historyItems.map((item) => (
                 <div key={item.id} className='history-item'>
                     <div className='history-info'>
-                        <h3>{item.type}</h3>
-                        <span>{item.date}</span>
+                        <div className="history-top">
+                            <h3>{item.calculator_name}</h3>
+                            <span className="history-date">{formatDate(item.date)}</span>
+                        </div>
+                        <p className="history-summary">{item.summary}</p>
                     </div>
-                    <button 
-                        className='btn-cek-hasil'
-                        onClick={() => handleCekHasil(item)}
-                    >
-                        Cek Hasil
-                    </button>
                 </div>
             ))}
         </div>

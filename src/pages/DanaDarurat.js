@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import NavBar from '../components/NavBar/NavBar';
-import { useLocation, useNavigate } from 'react-router-dom'; // Import useLocation & useNavigate
+import { useLocation, useNavigate } from 'react-router-dom';
 import './DanaDarurat.css';
 import { Button } from '../components/Button/Button';
+import api from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
 function DanaDarurat() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [pengeluaran, setPengeluaran] = useState('');
   const [targetBulan, setTargetBulan] = useState('');
@@ -17,7 +20,10 @@ function DanaDarurat() {
   const [targetDana, setTargetDana] = useState(0);
   const [hasilInvestasi, setHasilInvestasi] = useState(0);
   const [status, setStatus] = useState(null);
+  const [recommendation, setRecommendation] = useState(''); // New state
   const [showResult, setShowResult] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   
   const [isHistoryMode, setIsHistoryMode] = useState(false);
 
@@ -29,52 +35,26 @@ function DanaDarurat() {
     }).format(number);
   };
 
-  const calculateLogic = (vals) => {
-    const expense = parseFloat(vals.pengeluaran) || 0;
-    const monthsDuration = parseFloat(vals.targetBulan) || 0;
-    const currentSavings = parseFloat(vals.danaSaatIni) || 0;
-    const monthlyAdd = parseFloat(vals.investasiBulanan) || 0;
-    const rateYear = parseFloat(vals.returnInvestasi) || 0;
-
-    const safetyNetMultiplier = 6; 
-    const requiredFund = expense * safetyNetMultiplier;
-    const rateMonth = (rateYear / 100) / 12;
-    let futureValue = 0;
-
-    if (rateYear === 0) {
-      futureValue = currentSavings + (monthlyAdd * monthsDuration);
-    } else {
-      futureValue = 
-        currentSavings * Math.pow(1 + rateMonth, monthsDuration) + 
-        (monthlyAdd * ((Math.pow(1 + rateMonth, monthsDuration) - 1) / rateMonth));
-    }
-
-    setTargetDana(requiredFund);
-    setHasilInvestasi(futureValue);
-    if (futureValue >= requiredFund) {
-      setStatus('Cukup');
-    } else {
-      setStatus('Kurang');
-    }
-    setShowResult(true);
-  };
-
   useEffect(() => {
     if (location.state && location.state.isHistory) {
       setIsHistoryMode(true);
       const data = location.state.historyData;
       
-      setPengeluaran(data.pengeluaran);
-      setTargetBulan(data.targetBulan);
-      setDanaSaatIni(data.danaSaatIni);
-      setInvestasiBulanan(data.investasiBulanan);
-      setReturnInvestasi(data.returnInvestasi);
+      setPengeluaran(data.monthly_expense);
+      setTargetBulan(data.months_to_save);
+      setDanaSaatIni(data.current_emergency_fund);
+      setInvestasiBulanan(data.monthly_invest);
+      setReturnInvestasi(data.expected_return_pct);
 
-      calculateLogic(data);
+      setTargetDana(data.needed_fund);
+      setHasilInvestasi(data.future_value);
+      setStatus(data.is_suitable ? 'Cukup' : 'Kurang');
+      setRecommendation(data.recommendation);
+      setShowResult(true);
     }
   }, [location]);
 
-  const handleHitung = () => {
+  const handleHitung = async () => {
     if (isHistoryMode) {
       setIsHistoryMode(false);
       setShowResult(false);
@@ -83,17 +63,44 @@ function DanaDarurat() {
       setDanaSaatIni('');
       setInvestasiBulanan('');
       setReturnInvestasi('');
+      setRecommendation('');
       navigate('/dana-darurat', { replace: true, state: {} });
-    } else {
-      calculateLogic({
-        pengeluaran, targetBulan, danaSaatIni, investasiBulanan, returnInvestasi
-      });
+      return;
+    }
+
+    // Prepare payload
+    // Prepare payload
+    const payload = {
+        monthly_expense: parseFloat(pengeluaran),
+        months_to_save: parseInt(targetBulan),
+        current_emergency_fund: parseFloat(danaSaatIni),
+        monthly_invest: parseFloat(investasiBulanan),
+        expected_return_pct: parseFloat(returnInvestasi)
+    };
+
+    setLoading(true);
+    setError('');
+    
+    try {
+        const response = await api.post('dana-darurat/', payload);
+        const data = response.data;
+        
+        setTargetDana(data.needed_fund);
+        setHasilInvestasi(data.future_value);
+        setStatus(data.is_suitable ? 'Cukup' : 'Kurang');
+        setRecommendation(data.recommendation);
+        setShowResult(true);
+    } catch (err) {
+        console.error(err);
+        setError('Gagal menghitung. Pastikan semua input valid atau server sedang berjalan.');
+    } finally {
+        setLoading(false);
     }
   };
 
   return (
     <>
-      <NavBar isLoggedIn={true} />
+      <NavBar />
       
       <div className='dana-container'>
         <div className='dana-header'>
@@ -107,6 +114,7 @@ function DanaDarurat() {
 
         <div className='calculator-grid'>
             <div className='input-section'>
+                {error && <p className="error-msg" style={{color: 'red'}}>{error}</p>}
                 
                 <div className='form-group'>
                     <label>Pengeluaran Wajib Bulanan</label>
@@ -115,7 +123,7 @@ function DanaDarurat() {
                         placeholder="Rp."
                         value={pengeluaran} 
                         onChange={(e) => setPengeluaran(e.target.value)}
-                        disabled={isHistoryMode} 
+                        disabled={isHistoryMode || loading} 
                     />
                 </div>
 
@@ -125,7 +133,7 @@ function DanaDarurat() {
                         type="number" 
                         value={targetBulan} 
                         onChange={(e) => setTargetBulan(e.target.value)} 
-                        disabled={isHistoryMode}
+                        disabled={isHistoryMode || loading}
                     />
                 </div>
 
@@ -136,7 +144,7 @@ function DanaDarurat() {
                         placeholder="Rp."
                         value={danaSaatIni} 
                         onChange={(e) => setDanaSaatIni(e.target.value)} 
-                        disabled={isHistoryMode}
+                        disabled={isHistoryMode || loading}
                     />
                 </div>
 
@@ -147,7 +155,7 @@ function DanaDarurat() {
                         placeholder="Rp."
                         value={investasiBulanan} 
                         onChange={(e) => setInvestasiBulanan(e.target.value)} 
-                        disabled={isHistoryMode}
+                        disabled={isHistoryMode || loading}
                     />
                 </div>
 
@@ -158,7 +166,7 @@ function DanaDarurat() {
                             type="number" 
                             value={returnInvestasi} 
                             onChange={(e) => setReturnInvestasi(e.target.value)} 
-                            disabled={isHistoryMode}
+                            disabled={isHistoryMode || loading}
                         />
                         <span className="suffix">%</span>
                     </div>
@@ -182,9 +190,17 @@ function DanaDarurat() {
                 </div>
 
                 {showResult && (
-                    <div className={`status-pill ${status === 'Cukup' ? 'success' : 'danger'}`}>
-                        {status}
-                    </div>
+                    <>
+                        <div className={`status-pill ${status === 'Cukup' ? 'success' : 'danger'}`}>
+                            {status}
+                        </div>
+                        {recommendation && (
+                            <div className="recommendation-box" style={{marginTop: '20px', padding: '15px', backgroundColor: '#f0f9ff', borderRadius: '8px', borderLeft: '4px solid #00c6ff'}}>
+                                <h4>Rekomendasi</h4>
+                                <p>{recommendation}</p>
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
         </div>
@@ -196,8 +212,9 @@ function DanaDarurat() {
           buttonSize='btn--large'
           onClick={handleHitung}
           type='button'
+          disabled={loading}
           >
-            Hitung
+            {loading ? 'Menghitung...' : (isHistoryMode ? 'Hitung Ulang' : 'Hitung')}
           </Button>
         </div>
 

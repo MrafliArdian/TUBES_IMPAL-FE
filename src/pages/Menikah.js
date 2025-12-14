@@ -3,8 +3,11 @@ import NavBar from '../components/NavBar/NavBar';
 import { formatNumber, unformatNumber, formatRupiah } from "../Format";
 import './Menikah.css';
 import { Button } from '../components/Button/Button';
+import api from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
 function Menikah() {
+  const { user } = useAuth();
   const [targetBiaya, setTargetBiaya] = useState('');
   const [uangSaatIni, setUangSaatIni] = useState('');
   const [investasiBulanan, setInvestasiBulanan] = useState('');
@@ -13,43 +16,45 @@ function Menikah() {
 
   const [hasilInvestasi, setHasilInvestasi] = useState(0);
   const [status, setStatus] = useState(null);
+  const [recommendation, setRecommendation] = useState('');
   const [showResult, setShowResult] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleHitung = () => {
-    const principal = parseFloat(uangSaatIni) || 0;
-    const monthlyContribution = parseFloat(investasiBulanan) || 0;
-    const ratePerYear = parseFloat(returnInvestasi) || 0;
-    const years = parseFloat(jangkaWaktu) || 0;
-    const target = parseFloat(targetBiaya) || 0;
+  const handleHitung = async () => {
+    setLoading(true);
+    setError('');
+    setShowResult(false);
 
-    const ratePerMonth = (ratePerYear / 100) / 12;
-    const totalMonths = years * 12;
+    try {
+        const payload = {
+            target_cost: parseFloat(targetBiaya),
+            current_saving: parseFloat(uangSaatIni),
+            monthly_invest: parseFloat(investasiBulanan),
+            expected_return_pct: parseFloat(returnInvestasi),
+            months_to_event: parseInt(jangkaWaktu) * 12 // Convert years to months
+        };
 
-    let futureValue = 0;
+        const response = await api.post('menikah/', payload);
+        const data = response.data;
+        
+        setHasilInvestasi(data.future_value);
+        setStatus(data.is_suitable ? 'Cukup' : 'Kurang');
+        setRecommendation(data.recommendation);
+        setShowResult(true);
 
-    if (ratePerYear === 0) {
-      futureValue = principal + (monthlyContribution * totalMonths);
-    } else {
-      futureValue = 
-        principal * Math.pow(1 + ratePerMonth, totalMonths) +
-        (monthlyContribution * ((Math.pow(1 + ratePerMonth, totalMonths) - 1) / ratePerMonth));
+    } catch (err) {
+        console.error(err);
+        setError('Gagal menghitung. Periksa input atau koneksi server.');
+    } finally {
+        setLoading(false);
     }
-
-    setHasilInvestasi(futureValue);
-    
-    if (futureValue >= target) {
-      setStatus('Cukup');
-    } else {
-      setStatus('Kurang');
-    }
-    
-    setShowResult(true);
   };
 
 
   return (
     <>
-      <NavBar isLoggedIn={true} />
+      <NavBar />
       
       <div className='menikah-container'>
         <div className='menikah-header'>
@@ -59,6 +64,7 @@ function Menikah() {
 
         <div className='calculator-grid'>
             <div className='input-section'>
+                {error && <p className="error-msg" style={{color: 'red'}}>{error}</p>}
                 
                 <div className='form-group'>
                     <label>Target biaya menikah</label>
@@ -148,9 +154,16 @@ function Menikah() {
                 </div>
 
                 {showResult && (
-                    <div className={`status-pill ${status === 'Cukup' ? 'success' : 'danger'}`}>
-                        {status}
-                    </div>
+                    <>
+                        <div className={`status-pill ${status === 'Cukup' ? 'success' : 'danger'}`}>
+                            {status}
+                        </div>
+                        {recommendation && (
+                            <div className="recommendation-box" style={{marginTop: '20px', padding: '10px', background: '#eef'}}>
+                                <p><strong>Rekomendasi:</strong> {recommendation}</p>
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
         </div>
@@ -162,8 +175,9 @@ function Menikah() {
             buttonSize='btn--large'
             onClick={handleHitung}
             type='button'
+            disabled={loading}
             >
-                Hitung
+                {loading ? 'Menghitung...' : 'Hitung'}
             </Button>
         </div>
 

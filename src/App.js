@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 
 import NavBar from './components/NavBar/NavBar';
 
@@ -32,32 +33,33 @@ const PublicLayout = () => {
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route element={<PublicLayout />}>
-          <Route path="/" exact Component={Home} />
-          <Route path='/sign-up' Component={SignUp}/>
-          <Route path='/sign-in' Component={SignIn}/>
-        </Route>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route element={<PublicLayout />}>
+            <Route path="/" exact Component={Home} />
+            <Route path='/sign-up' Component={SignUp}/>
+            <Route path='/sign-in' Component={SignIn}/>
+          </Route>
 
-        <Route path='/dashboard' Component={Dashboard}/>
-        <Route path='/menikah' Component={Menikah}/>
-        <Route path='/pensiun' Component={DanaPensiun}/>
-        <Route path='/kendaraan' Component={Kendaraan}/>
-        <Route path='/pendidikan' Component={Pendidikan}/>
-        <Route path='/simulasiKPR' Component={SimulasiKPR}/>
-        <Route path='/simulasiKPR' Component={SimulasiKPR}/>
-        <Route path='/danaDarurat' Component={DanaDarurat}/>
-        <Route path='/history' Component={History}/>
-        <Route path='/editProfile' Component={EditProfile}/>
-        <Route path='/editPass' Component={EditPassword}/>
-        <Route path='/admin-panel' Component={AdminPanel}/>
-        <Route path='/upload-artikel' Component={UploadArtikel}/>
-        <Route path='/Emas' Component={KalkulatorEmas}/>
-        
-
-      </Routes>
-    </Router>
+          <Route path='/dashboard' Component={Dashboard}/>
+          <Route path='/menikah' Component={Menikah}/>
+          <Route path='/pensiun' Component={DanaPensiun}/>
+          <Route path='/kendaraan' Component={Kendaraan}/>
+          <Route path='/pendidikan' Component={Pendidikan}/>
+          <Route path='/simulasiKPR' Component={SimulasiKPR}/>
+          {/* Duplicate route removed */}
+          <Route path='/danaDarurat' Component={DanaDarurat}/>
+          <Route path='/history' Component={History}/>
+          <Route path='/editProfile' Component={EditProfile}/>
+          <Route path='/editPass' Component={EditPassword}/>
+          <Route path='/admin-panel' Component={AdminPanel}/>
+          <Route path='/upload-artikel' Component={UploadArtikel}/>
+          <Route path='/Emas' Component={KalkulatorEmas}/>
+          
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
