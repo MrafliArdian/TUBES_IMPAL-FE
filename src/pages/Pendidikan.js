@@ -2,18 +2,27 @@ import React, { useState } from 'react';
 import NavBar from '../components/NavBar/NavBar';
 import './Pendidikan.css';
 import { Button } from '../components/Button/Button';
+import api from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
 function Pendidikan() {
+  const { user } = useAuth();
   const [usiaAnakSekarang, setUsiaAnakSekarang] = useState('');
   const [usiaMasukKuliah, setUsiaMasukKuliah] = useState('');
   const [biayaPerTahun, setBiayaPerTahun] = useState('');
   const [lamaKuliah, setLamaKuliah] = useState('');
   const [inflasi, setInflasi] = useState('');
   const [returnInvestasi, setReturnInvestasi] = useState('');
+  const [danaSaatIni, setDanaSaatIni] = useState('');
+  const [investasiBulanan, setInvestasiBulanan] = useState('');
 
   const [totalBiayaMasaDepan, setTotalBiayaMasaDepan] = useState(0);
-  const [danaPerBulan, setDanaPerBulan] = useState(0);
+  const [hasilInvestasi, setHasilInvestasi] = useState(0);
+  const [status, setStatus] = useState(null);
+  const [recommendation, setRecommendation] = useState('');
   const [showResult, setShowResult] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const formatRupiah = (number) => {
     return new Intl.NumberFormat('id-ID', {
@@ -23,43 +32,43 @@ function Pendidikan() {
     }).format(number);
   };
 
-  const handleHitung = () => {
-    const currentAge = parseFloat(usiaAnakSekarang) || 0;
-    const collegeAge = parseFloat(usiaMasukKuliah) || 0;
-    const currentCostPerYear = parseFloat(biayaPerTahun) || 0;
-    const duration = parseFloat(lamaKuliah) || 0;
-    const inflationRate = parseFloat(inflasi) || 0;
-    const investmentReturn = parseFloat(returnInvestasi) || 0;
+  const handleHitung = async () => {
+    setLoading(true);
+    setError('');
+    setShowResult(false);
 
-    const yearsToCollege = collegeAge - currentAge;
-    
-    if (yearsToCollege <= 0) {
-      alert("Usia masuk kuliah harus lebih besar dari usia sekarang");
-      return;
+    try {
+        const payload = {
+            child_age_years: parseInt(usiaAnakSekarang),
+            college_entry_age: parseInt(usiaMasukKuliah),
+            current_tuition_per_year: parseFloat(biayaPerTahun),
+            college_duration_years: parseInt(lamaKuliah),
+            education_inflation_pct: parseFloat(inflasi),
+            expected_return_pct: parseFloat(returnInvestasi),
+            current_saving: parseFloat(danaSaatIni),
+            monthly_invest: parseFloat(investasiBulanan)
+        };
+
+        const response = await api.post('pendidikan-anak/', payload);
+        const data = response.data;
+
+        setTotalBiayaMasaDepan(data.total_education_need);
+        setHasilInvestasi(data.future_value);
+        setStatus(data.is_suitable ? 'Cukup' : 'Kurang');
+        setRecommendation(data.recommendation);
+        setShowResult(true);
+
+    } catch (err) {
+        console.error(err);
+        setError('Gagal menghitung. Periksa input atau koneksi server.');
+    } finally {
+        setLoading(false);
     }
-
-    const totalCurrentCost = currentCostPerYear * duration;
-
-    const futureCost = totalCurrentCost * Math.pow((1 + (inflationRate / 100)), yearsToCollege);
-
-    let monthlySavings = 0;
-    const totalMonths = yearsToCollege * 12;
-    const monthlyReturn = (investmentReturn / 100) / 12;
-
-    if (investmentReturn === 0) {
-      monthlySavings = futureCost / totalMonths;
-    } else {
-      monthlySavings = futureCost * (monthlyReturn / (Math.pow(1 + monthlyReturn, totalMonths) - 1));
-    }
-
-    setTotalBiayaMasaDepan(futureCost);
-    setDanaPerBulan(monthlySavings);
-    setShowResult(true);
   };
 
   return (
     <>
-      <NavBar isLoggedIn={true} />
+      <NavBar />
       
       <div className='pendidikan-container'>
         <div className='pendidikan-header'>
@@ -69,6 +78,7 @@ function Pendidikan() {
 
         <div className='calculator-grid'>
             <div className='input-section'>
+                {error && <p className="error-msg" style={{color: 'red'}}>{error}</p>}
                 
                 <h3 className='section-title'>Data Anak</h3>
                 <div className='form-row'>
@@ -120,7 +130,28 @@ function Pendidikan() {
                     </div>
                 </div>
 
-                <h3 className='section-title'>Asumsi Keuangan</h3>
+                <h3 className='section-title'>Kondisi Keuangan & Asumsi</h3>
+                 <div className='form-row'>
+                    <div className='form-group half-width'>
+                        <label>Dana saat ini</label>
+                         <input 
+                            type="number" 
+                            placeholder="Rp."
+                            value={danaSaatIni} 
+                            onChange={(e) => setDanaSaatIni(e.target.value)} 
+                        />
+                    </div>
+                    <div className='form-group half-width'>
+                        <label>Investasi Rutin Bulanan</label>
+                         <input 
+                            type="number" 
+                            placeholder="Rp."
+                            value={investasiBulanan} 
+                            onChange={(e) => setInvestasiBulanan(e.target.value)} 
+                        />
+                    </div>
+                </div>
+                
                 <div className='form-row'>
                     <div className='form-group half-width'>
                         <label>Inflasi Pendidikan</label>
@@ -150,18 +181,31 @@ function Pendidikan() {
 
             <div className='result-section'>
                 <div className='result-item'>
-                    <p className='label-result'>Total biaya kuliah di masa depan</p>
+                    <p className='label-result'>Total biaya kuliah kelak</p>
                     <h3 className='large-result'>
                         {showResult ? formatRupiah(totalBiayaMasaDepan) : 'Rp -'}
                     </h3>
                 </div>
 
                 <div className='result-item'>
-                    <p className='label-result'>Dana yang harus dipersiapkan (Per Bulan)</p>
+                    <p className='label-result'>Nilai Aset Nanti (FV)</p>
                     <h3 className='large-result'>
-                        {showResult ? formatRupiah(danaPerBulan) : 'Rp -'}
+                        {showResult ? formatRupiah(hasilInvestasi) : 'Rp -'}
                     </h3>
                 </div>
+
+                {showResult && (
+                    <>
+                        <div className={`status-pill ${status === 'Cukup' ? 'success' : 'danger'}`}>
+                            {status}
+                        </div>
+                        {recommendation && (
+                            <div className="recommendation-box" style={{marginTop: '20px', padding: '10px', background: '#eef'}}>
+                                <p><strong>Rekomendasi:</strong> {recommendation}</p>
+                            </div>
+                        )}
+                    </>
+                )}
             </div>
         </div>
 
@@ -172,8 +216,9 @@ function Pendidikan() {
             buttonSize='btn--large'
             onClick={handleHitung}
             type='button'
+            disabled={loading}
             >
-                Hitung
+                {loading ? 'Menghitung...' : 'Hitung'}
             </Button>
         </div>
 

@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import './SignUp.css';
 import { Button } from '../components/Button/Button';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 export default function SignUp() {
     const navigate = useNavigate();
+    const { register } = useAuth();
 
     const [nama, setNama] = useState("");
     const [email, setEmail] = useState("");
@@ -12,8 +14,10 @@ export default function SignUp() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    function handleSubmit() {
+    async function handleSubmit() {
+      setError('');
       if (!nama || !email || !hp || !password || !confirmPassword) {
         setError("Semua field harus diisi!");
         return;
@@ -30,13 +34,33 @@ export default function SignUp() {
         return;
       }
 
-      if (confirmPassword != password){
+      if (confirmPassword !== password){
         setError("Password tidak sesuai!")
         return
       }
-      
-      // valid → navigate
-      navigate("/dashboard");
+
+      setLoading(true);
+      try {
+        // Calling register with: username, email, password, confirmPassword, phone_number, full_name
+        // We use 'nama' for both username and full_name
+        const result = await register(nama, email, password, confirmPassword, hp, nama); 
+        
+        if (result.success) {
+            alert('Registrasi berhasil! Silakan login.');
+            navigate("/sign-in");
+        } else {
+             // Handle object or string error
+             const msg = result.error 
+                ? (typeof result.error === 'object' ? JSON.stringify(result.error) : result.error)
+                : "Gagal mendaftar.";
+             setError(msg);
+        }
+      } catch (err) {
+        console.error(err);
+        setError("Terjadi kesalahan sistem. Cek konsol.");
+      } finally {
+        setLoading(false);
+      }
   }
 
   return (
@@ -102,7 +126,7 @@ export default function SignUp() {
             required
             />
 
-            {error && <p className="error">{error}</p>}
+            {error && <p className="error" style={{color: 'red', fontSize: '14px', marginTop: '10px'}}>{error}</p>}
           </form>
           <div className="signIn-btn">
               <Button 
@@ -111,17 +135,14 @@ export default function SignUp() {
               buttonSize='btn--large'
               onClick={handleSubmit}
               type='button'
+              disabled={loading}
               >
-              Daftar
+              {loading ? 'Mendaftar...' : 'Daftar'}
               </Button>
           </div>
 
         </div>
       </div>
-
-      {/* <nav className="navbarBawah"> */}
-            
-      {/* </nav> */}
     </div>
   );
 }

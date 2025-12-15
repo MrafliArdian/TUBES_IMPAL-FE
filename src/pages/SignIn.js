@@ -2,26 +2,39 @@ import React, { useState } from 'react';
 import './SignIn.css';
 import { Button } from '../components/Button/Button';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 export default function SignIn() {
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const [password, setPassword] = useState("");
     const [nama, setNama] = useState("");
     const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
-    function handleSubmit() {
+    async function handleSubmit() {
       if (!nama|| !password) {
         setError("Semua field harus diisi!");
         return;
       }
 
-      if (password.length < 8) {
-        setError("Password harus minimal 8 karakter!");
-        return;
+    //   if (password.length < 8) {
+    //     setError("Password harus minimal 8 karakter!");
+    //     return;
+    //   } // Backend will handle this validation
+
+      setIsLoading(true);
+      const res = await login(nama, password);
+      setIsLoading(false);
+
+      if (res.success) {
+        navigate("/dashboard");
+      } else {
+          // res.error could be object or string
+          const msg = typeof res.error === 'string' ? res.error : JSON.stringify(res.error);
+          setError(msg);
       }
-      // valid → navigate
-      navigate("/dashboard");
   }
 
   return (
@@ -66,7 +79,7 @@ export default function SignIn() {
               onClick={handleSubmit}
               type='button'
               >
-              Daftar
+              {isLoading ? 'Loading...' : 'Masuk'}
               </Button>
           </div>
 

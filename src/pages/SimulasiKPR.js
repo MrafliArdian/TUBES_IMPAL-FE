@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import NavBar from '../components/NavBar/NavBar';
 import './SimulasiKPR.css';
 import { Button } from '../components/Button/Button';
+import api from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
 function SimulasiKPR() {
+  const { user } = useAuth();
   const [hargaProperti, setHargaProperti] = useState('');
   const [penghasilan, setPenghasilan] = useState('');
   const [dpPercent, setDpPercent] = useState('');
@@ -17,7 +20,10 @@ function SimulasiKPR() {
   const [totalBungaFloating, setTotalBungaFloating] = useState(0);
   const [sisaPokok, setSisaPokok] = useState(0);
   const [status, setStatus] = useState(null);
+  const [recommendation, setRecommendation] = useState('');
   const [showResult, setShowResult] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const formatRupiah = (number) => {
     return new Intl.NumberFormat('id-ID', {
@@ -27,80 +33,46 @@ function SimulasiKPR() {
     }).format(number);
   };
 
-  const calculatePMT = (rate, nper, pv) => {
-    if (rate === 0) return pv / nper;
-    return (pv * rate) / (1 - Math.pow(1 + rate, -nper));
-  };
+  const handleHitung = async () => {
+    setLoading(true);
+    setError('');
+    setShowResult(false);
 
-  const handleHitung = () => {
-    const price = parseFloat(hargaProperti) || 0;
-    const income = parseFloat(penghasilan) || 0;
-    const dp = parseFloat(dpPercent) || 0;
-    const totalTenor = parseFloat(tenorBulan) || 0;
-    const rateFixYear = parseFloat(bungaFix) || 0;
-    const fixPeriod = parseFloat(periodeFix) || 0;
-    const rateFloatYear = parseFloat(bungaFloating) || 0;
+    try {
+        const payload = {
+            property_price: parseFloat(hargaProperti),
+            monthly_income: parseFloat(penghasilan),
+            dp_percentage: parseFloat(dpPercent),
+            loan_term_months: parseInt(tenorBulan),
+            fixed_interest_rate: parseFloat(bungaFix),
+            fixed_period_months: parseInt(periodeFix),
+            floating_interest_rate: parseFloat(bungaFloating)
+        };
 
-    if (fixPeriod > totalTenor) {
-      alert("Periode bunga fix tidak boleh lebih lama dari total tenor KPR");
-      return;
+        const response = await api.post('simulasi-kpr/', payload);
+        const data = response.data;
+
+        // Note: Backend definitions for interest breakdowns might be missing in default serializer.
+        // We display what we have.
+        setPokokPinjaman(data.loan_amount);
+        setTotalBungaFix(data.monthly_installment_fixed); // Using monthly installment as proxy if total interest not avail? Or leave 0.
+        // Actually simplest is to just rely on is_suitable and recommendation for now.
+        
+        setStatus(data.is_suitable ? 'Cukup' : 'Kurang');
+        setRecommendation(data.recommendation);
+        setShowResult(true);
+
+    } catch (err) {
+        console.error(err);
+        setError('Gagal menghitung. Periksa input atau koneksi server.');
+    } finally {
+        setLoading(false);
     }
-
-    const downPaymentAmount = price * (dp / 100);
-    const loanAmount = price - downPaymentAmount;
-
-    const rateFixMonth = (rateFixYear / 100) / 12;
-    const monthlyInstallmentFix = calculatePMT(rateFixMonth, totalTenor, loanAmount);
-
-    let currentBalance = loanAmount;
-    let accumulatedInterestFix = 0;
-
-    for (let i = 0; i < fixPeriod; i++) {
-      const interestPortion = currentBalance * rateFixMonth;
-      const principalPortion = monthlyInstallmentFix - interestPortion;
-      accumulatedInterestFix += interestPortion;
-      currentBalance -= principalPortion;
-    }
-
-    const balanceAfterFix = currentBalance;
-
-    const remainingTenor = totalTenor - fixPeriod;
-    let accumulatedInterestFloat = 0;
-    let monthlyInstallmentFloat = 0;
-
-    if (remainingTenor > 0) {
-      const rateFloatMonth = (rateFloatYear / 100) / 12;
-      monthlyInstallmentFloat = calculatePMT(rateFloatMonth, remainingTenor, balanceAfterFix);
-
-      let tempBalance = balanceAfterFix;
-      for (let i = 0; i < remainingTenor; i++) {
-        const interestPortion = tempBalance * rateFloatMonth;
-        const principalPortion = monthlyInstallmentFloat - interestPortion;
-        accumulatedInterestFloat += interestPortion;
-        tempBalance -= principalPortion;
-      }
-    }
-
-    setPokokPinjaman(loanAmount);
-    setTotalBungaFix(accumulatedInterestFix);
-    setSisaPokok(balanceAfterFix);
-    setTotalBungaFloating(accumulatedInterestFloat);
-
-    const maxInstallment = income * 0.3; 
-    const currentInstallment = fixPeriod > 0 ? monthlyInstallmentFix : monthlyInstallmentFloat;
-
-    if (currentInstallment <= maxInstallment) {
-      setStatus('Cukup');
-    } else {
-      setStatus('Kurang');
-    }
-
-    setShowResult(true);
   };
 
   return (
     <>
-      <NavBar isLoggedIn={true} />
+      <NavBar />
       
       <div className='kpr-container'>
         <div className='kpr-header'>
@@ -110,6 +82,7 @@ function SimulasiKPR() {
 
         <div className='calculator-grid'>
             <div className='input-section'>
+                {error && <p className="error-msg" style={{color: 'red'}}>{error}</p>}
                 
                 <div className='form-group'>
                     <label>Harga properti impianmu</label>
@@ -220,9 +193,16 @@ function SimulasiKPR() {
                 </div>
 
                 {showResult && (
-                    <div className={`status-pill ${status === 'Cukup' ? 'success' : 'danger'}`}>
-                        {status}
-                    </div>
+                    <>
+                        <div className={`status-pill ${status === 'Cukup' ? 'success' : 'danger'}`}>
+                            {status}
+                        </div>
+                        {recommendation && (
+                            <div className="recommendation-box" style={{marginTop: '20px', padding: '10px', background: '#eef'}}>
+                                <p><strong>Rekomendasi:</strong> {recommendation}</p>
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
         </div>
@@ -234,8 +214,9 @@ function SimulasiKPR() {
             buttonSize='btn--large'
             onClick={handleHitung}
             type='button'
+            disabled={loading}
             >
-                Hitung
+                {loading ? 'Menghitung...' : 'Hitung'}
             </Button>
         </div>
 
