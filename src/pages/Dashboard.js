@@ -1,18 +1,20 @@
 import React from 'react';
 import NavBar from '../components/NavBar/NavBar.js';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './Dashboard.css';
 
 function Dashboard() {
     const navigate = useNavigate();
+    const { user } = useAuth();
   return (
     <>
-      <NavBar isLoggedIn={true} />
+      <NavBar />
       
       <div className='dashboard-container'>
         
         <div className='welcome-banner'>
-          <h2>Selamat Datang!</h2>
+          <h2>Selamat Datang, {user?.full_name || user?.username}!</h2>
         </div>
 
         <div className='calculator-card'>

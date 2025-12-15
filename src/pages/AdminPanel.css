@@ -71,7 +71,6 @@
 }
 
 
-
 /* ====== MAIN CONTENT ====== */
 .admin-content {
   flex: 1;
@@ -86,8 +85,6 @@
   margin-bottom: 40px;
   color: #333;
 }
-
-
 
 /* ====== TABLE ====== */
 table {

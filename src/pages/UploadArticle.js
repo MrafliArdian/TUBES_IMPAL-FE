@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./UploadArticle.css";
+import api from '../services/api';
+import { Button } from "../components/Button/Button";
 
 export default function UploadArticle() {
   const [form, setForm] = useState({
@@ -9,12 +11,15 @@ export default function UploadArticle() {
     image_url: "",
     source_link: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (
       !form.title ||
       !form.description ||
@@ -26,8 +31,26 @@ export default function UploadArticle() {
       return;
     }
 
-    console.log("Data dikirim:", form);
-    alert("Artikel berhasil diunggah!");
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    try {
+        await api.post('artikel/', form);
+        setSuccess('Artikel berhasil diunggah!');
+        setForm({
+            title: "",
+            description: "",
+            content: "",
+            image_url: "",
+            source_link: "",
+        });
+    } catch (err) {
+        console.error(err);
+        setError('Gagal mengunggah artikel. ' + (err.response?.data?.message || err.message));
+    } finally {
+        setLoading(false);
+    }
   };
 
   return (
@@ -40,15 +63,36 @@ export default function UploadArticle() {
         </h2>
 
         <ul>
-          <li>Dashboard</li>
+          <li>
+            <Button
+            to='/admin-panel' 
+            className='btns-admin' 
+            buttonStyle='btn--darkgreen' 
+            buttonSize='btn--medium'
+            >
+              Dashboard
+            </Button>
+          </li>
           <li className="active">Upload Artikel</li>
-          <li>Back to Home</li>
+          <li>
+            <Button
+            to='/dashboard' 
+            className='btns-admin' 
+            buttonStyle='btn--darkgreen' 
+            buttonSize='btn--medium'
+            >
+              Back to Home
+            </Button>
+            </li>
         </ul>
       </div>
 
       {/* MAIN CONTENT */}
       <div className="admin-content">
         <h1>Upload Artikel</h1>
+
+        {error && <p className="error-msg" style={{color: 'red'}}>{error}</p>}
+        {success && <p className="success-msg" style={{color: 'green'}}>{success}</p>}
 
         <div className="upload-article-card">
 
@@ -112,8 +156,8 @@ export default function UploadArticle() {
             />
           </div>
 
-          <button className="btn-save" onClick={handleSubmit}>
-            Simpan Artikel
+          <button className="btn-save" onClick={handleSubmit} disabled={loading}>
+            {loading ? 'Menyimpan...' : 'Simpan Artikel'}
           </button>
 
         </div>
