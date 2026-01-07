@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./AdminPanel.css";
 import NavBar from "../components/NavBar/NavBar";
-import { Link } from "react-router-dom";
 import { Button } from "../components/Button/Button";
 import api from '../services/api';
 

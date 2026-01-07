@@ -6,15 +6,13 @@ import { useAuth } from '../../context/AuthContext';
 function NavBar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [click, setClick] = useState(false);
   const [profileDropdown, setProfileDropdown] = useState(false);
 
   // Derive state from user context
   const isLoggedIn = !!user;
   const isAdmin = user?.role === 'ADMIN' || user?.role === 'SUPERUSER';
 
-  const handleClick = () => setClick(!click);
-  const closeMobileMenu = () => setClick(false);
+  const closeMobileMenu = () => {};
   const toggleProfileDropdown = () => setProfileDropdown(!profileDropdown);
 
   const handleLogout = () => {
@@ -23,11 +21,7 @@ function NavBar() {
     navigate('/');
   };
 
-  useEffect(() => {
-    showButton();
-    window.addEventListener('resize', showButton);
-    return () => window.removeEventListener('resize', showButton);
-  }, []);
+
 
 
   const renderMenuItems = () => {
@@ -74,7 +68,7 @@ function NavBar() {
             <img src="/images/Logo.png" alt="Logo" className='navbar-logo-img'/>
           </Link>
 
-          <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+          <ul className='nav-menu'>
             {renderMenuItems()}
           </ul>
 

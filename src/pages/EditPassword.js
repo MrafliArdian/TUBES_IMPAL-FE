@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import NavBar from "../components/NavBar/NavBar";
 import "./EditPassword.css";
+import api from '../services/api';
 
 function EditPassword() {
   const [data, setData] = useState({
@@ -8,6 +9,9 @@ function EditPassword() {
     new_password: "",
     new_password2: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const handleChange = (e) => {
     setData({
@@ -16,18 +20,37 @@ function EditPassword() {
     });
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!data.old_password || !data.new_password || !data.new_password2) {
-      alert("Semua field wajib diisi!");
+      setError("Semua field wajib diisi!");
       return;
     }
 
     if (data.new_password !== data.new_password2) {
-      alert("Password baru dan konfirmasi tidak cocok!");
+      setError("Password baru dan konfirmasi tidak cocok!");
       return;
     }
 
-    alert("Password berhasil diperbarui!");
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      await api.post('auth/change-password/', data);
+      setSuccess('Password berhasil diperbarui! Silakan login ulang dengan password baru.');
+      
+      // Clear form
+      setData({
+        old_password: "",
+        new_password: "",
+        new_password2: "",
+      });
+    } catch (err) {
+      console.error(err);
+      setError('Gagal mengubah password. ' + (err.response?.data?.old_password?.[0] || err.response?.data?.message || err.message));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -41,6 +64,8 @@ function EditPassword() {
         </div>
 
         <div className="edit-profile-card">
+          {error && <p className="error-msg" style={{color: 'red', textAlign: 'center'}}>{error}</p>}
+          {success && <p className="success-msg" style={{color: 'green', textAlign: 'center'}}>{success}</p>}
 
           <div className="form-group">
             <label>Password Lama</label>
@@ -52,6 +77,7 @@ function EditPassword() {
               onChange={handleChange}
               placeholder="Masukkan password lama"
               autoComplete="new-password"
+              disabled={loading}
             />
           </div>
 
@@ -65,6 +91,7 @@ function EditPassword() {
               onChange={handleChange}
               placeholder="Masukkan password baru"
               autoComplete="new-password"
+              disabled={loading}
             />
           </div>
 
@@ -78,11 +105,12 @@ function EditPassword() {
               onChange={handleChange}
               placeholder="Ulangi password baru"
               autoComplete="new-password"
+              disabled={loading}
             />
           </div>
 
-          <button className="btn-submit" onClick={handleSave}>
-            Simpan Perubahan
+          <button className="btn-submit" onClick={handleSave} disabled={loading}>
+            {loading ? 'Menyimpan...' : 'Simpan Perubahan'}
           </button>
         </div>
       </div>

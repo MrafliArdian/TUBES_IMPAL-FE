@@ -56,6 +56,36 @@ function History() {
     });
   };
 
+  const timeAgo = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const seconds = Math.floor((now - date) / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (days > 0) return `${days}d ago`;
+    if (hours > 0) {
+        if (minutes % 60 > 0) return `${hours}h ${minutes % 60}m ago`;
+        return `${hours}h ago`;
+    }
+    if (minutes > 0) return `${minutes}m ago`;
+    return 'Just now';
+  };
+
+  const formatCalculatorName = (type) => {
+      switch(type) {
+          case 'emergency_fund': return 'Dana Darurat';
+          case 'pension': return 'Dana Pensiun';
+          case 'marriage': return 'Menikah';
+          case 'education': return 'Pendidikan Anak';
+          case 'kpr': return 'Simulasi KPR';
+          case 'gold': return 'Kalkulator Emas';
+          case 'vehicle': return 'Kendaraan';
+          default: return type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+      }
+  };
+
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
     return new Date(dateString).toLocaleDateString('id-ID', options);
@@ -81,12 +111,15 @@ function History() {
             {historyItems.map((item) => (
                 <div key={item.id} className='history-item'>
                     <div className='history-info'>
-                        <div className="history-top">
-                            <h3>{item.calculator_name}</h3>
-                            <span className="history-date">{formatDate(item.date)}</span>
-                        </div>
-                        <p className="history-summary">{item.summary}</p>
+                        <h3>{item.calculator_name || formatCalculatorName(item.calculator_type)}</h3>
+                        <span className="history-date">{timeAgo(item.date)}</span>
                     </div>
+                    <button 
+                        className="btn-cek-hasil"
+                        onClick={() => handleCekHasil(item)}
+                    >
+                        Cek Hasil
+                    </button>
                 </div>
             ))}
         </div>

@@ -46,7 +46,7 @@ export default function KalkulatorEmas() {
           const payload = {
               mode: mode,
               price_per_gram: pricePerGram,
-              price_choice: useSellPrice ? 'sell' : 'buy', // Metadata
+              price_choice: useSellPrice ? 'SELL' : 'BUY', // Metadata
           };
 
           if (mode === 'emas_to_rupiah') {
